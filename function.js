@@ -19,6 +19,7 @@ window.function = function (html, fileName, format, zoom, orientation, margin, f
 
     const formatDimensions = {
         tiket: [350, 350],
+        tiket3: [350, 1050],
      };
 
     const dimensions = customDimensions || formatDimensions[format];
