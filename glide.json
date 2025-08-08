@@ -2,21 +2,10 @@
     {
         "kind": "column",
         "name": "HTML to Printer",
-        "description": "Allows you to print HTML content directly to a Bluetooth printer",
+        "description": "Automatically prints HTML content to Bluetooth printer with auto size detection",
         "author": "KICAU NUSANTARA",
         "params": [
-            { "name": "html", "displayName": "HTML", "type": "string" },
-            { "name": "fileName", "displayName": "Filename", "type": "string" },
-            { "name": "format", "displayName": "Format (tiket, invoice)", "type": "string" },
-            { "name": "zoom", "displayName": "Zoom (0.5 to 2)", "type": "string" },
-            { "name": "orientation", "displayName": "Orientation (portrait, landscape)", "type": "string" },
-            { "name": "margin", "displayName": "Margin (px)", "type": "string" },
-            { "name": "breakBefore", "displayName": "Break page before this (#ids, .classes, elements)", "type": "string" },
-            { "name": "breakAfter", "displayName": "Break page after this (#ids, .classes, elements)", "type": "string" },
-            { "name": "breakAvoid", "displayName": "Don't break page on this (#ids, .classes, elements)", "type": "string" },
-            { "name": "fidelity", "displayName": "Fidelity (low, standard, high)", "type": "string" },
-            { "name": "customDimensions", "displayName": "Custom Dimensions (e.g: 350,350)", "type": "string" },
-            { "name": "autoSize", "displayName": "Auto Detect Size (true/false)", "type": "string" }
+            { "name": "html", "displayName": "HTML", "type": "string" }
         ],
         "result": { "type": "string" }
     }
