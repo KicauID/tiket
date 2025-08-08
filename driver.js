@@ -1,17 +1,13 @@
 window.addEventListener("message", async function(event) {
     const { data: { key, params } } = event;
 
-    let result, error;
+    let result;
+    let error;
     try {
-        // Hanya meneruskan param HTML
         result = await window.function(...params);
     } catch (e) {
         result = undefined;
-        try {
-            error = e.toString();
-        } catch {
-            error = "Exception can't be stringified.";
-        }
+        error = e?.toString() ?? "Exception can't be stringified.";
     }
 
     const response = { key };
