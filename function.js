@@ -55,23 +55,7 @@ window.function = function (htmlParam, fileNameParam) {
         color: #000000;
       }
 
-      .invoice {
-        width: 350px;
-        height: auto;
-        padding: 0;
-        box-sizing: border-box;
-        margin-top: 0 !important;
-      }
-
-      ::-webkit-scrollbar {
-        width: 5px;
-        background-color: rgba(0, 0, 0, 0.08);
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.32);
-        border-radius: 4px;
-      }
+ 
     `;
 
     // Halaman HTML yang akan dibuka
