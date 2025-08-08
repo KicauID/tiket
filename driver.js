@@ -7,7 +7,11 @@ window.addEventListener("message", async function(event) {
         result = await window.function(...params);
     } catch (e) {
         result = undefined;
-        error = e?.toString() ?? "Exception can't be stringified.";
+        try {
+            error = e.toString();
+        } catch {
+            error = "Exception can't be stringified.";
+        }
     }
 
     const response = { key };
