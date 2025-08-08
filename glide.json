@@ -1,13 +1,18 @@
 [
     {
         "kind": "column",
-        "name": "HTML to AutoSize Printer",
-        "description": "Cetak HTML langsung sesuai ukuran aslinya (auto-size)",
+        "name": "HTML to Printer",
+        "description": "Cetak HTML ke printer Bluetooth dengan lebar 350px dan tinggi otomatis mengikuti konten",
         "author": "KICAU NUSANTARA",
         "params": [
             {
                 "name": "html",
                 "displayName": "HTML",
+                "type": "string"
+            },
+            {
+                "name": "fileName",
+                "displayName": "Filename",
                 "type": "string"
             }
         ],
