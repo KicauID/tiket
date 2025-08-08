@@ -1,6 +1,8 @@
 window.function = function (html) {
-    html = html.value ?? "No HTML set.";
+    // Ambil HTML dari param Glide
+    html = html?.value ?? "No HTML set.";
 
+    // CSS khusus untuk tombol dan layout
     const customCSS = `
         body { margin: 0!important; }
         .button {
@@ -29,6 +31,7 @@ window.function = function (html) {
         ::-webkit-scrollbar-thumb { background-color: rgb(0 0 0 / 32%); border-radius: 4px; }
     `;
 
+    // HTML yang akan dibuka saat print
     const originalHTML = `
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
         <style>${customCSS}</style>
@@ -64,6 +67,10 @@ window.function = function (html) {
         </script>
     `;
 
-    var encodedHtml = encodeURIComponent(originalHTML);
+    // Encode HTML agar aman dibuka di browser
+    const encodedHtml = encodeURIComponent(originalHTML)
+        .replace(/'/g, "%27")
+        .replace(/"/g, "%22");
+
     return "data:text/html;charset=utf-8," + encodedHtml;
 };
