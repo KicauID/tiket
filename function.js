@@ -1,6 +1,6 @@
 window.function = function (htmlParam, fileNameParam) {
   try {
-    // Ambil input HTML
+    // Ambil input (Glide biasanya kirim { value: "..." })
     const htmlRaw = (htmlParam && typeof htmlParam === 'object' && 'value' in htmlParam)
       ? String(htmlParam.value)
       : String(htmlParam ?? '');
@@ -9,62 +9,73 @@ window.function = function (htmlParam, fileNameParam) {
       ? String(fileNameParam.value)
       : String(fileNameParam ?? 'print');
 
+    // sanitasi nama file untuk keamanan
     const safeFileName = fileNameRaw.replace(/[^\w\-\.]+/g, '_');
+
+    // encode HTML user supaya tidak memutus <script> wrapper saat kita embed
     const encodedUserHtml = encodeURIComponent(htmlRaw);
 
-    // CSS: lebar tetap 350px, semua margin/padding atas dihapus total
-   const customCSS = `
-    body {
-        margin: 0!important;
-    }
+    // CSS fix overlay tombol
+    const customCSS = `
+      html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff;
+        font-family: Arial, sans-serif;
+      }
 
-    .button {
+      .button {
         width: 100%;
+        height: 32px;
         border-radius: 0;
         font-size: 14px;
         font-weight: 600;
-        line-height: 1.5rem;
+        line-height: 32px;
         color: #ffffff;
         border: none;
-        font-family: 'Arial';
-        padding: 0px 12px;
-        height: 32px;
+        padding: 0 12px;
         text-transform: uppercase;
         cursor: pointer;
         box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.08), 0 1px 2.5px rgba(0, 0, 0, 0.1);
         position: fixed;
         top: 0;
+        left: 0;
         z-index: 1000;
         background: #0353A7;
-    }
+      }
 
-    .button:hover {
+      .button:hover {
         background: #f5f5f5;
         color: #000000;
-    }
+      }
 
-    .button.printing {
+      .button.printing,
+      .button.done {
         background: #ffffff;
         color: #000000;
-    }
+      }
 
-    .button.done {
-        background: #ffffff;
-        color: #000000;
-    }
+      .invoice {
+        width: 350px;
+        height: auto;
+        border-bottom: 5px dashed #000;
+        padding: 0;
+        box-sizing: border-box;
+        margin-top: 0 !important;
+      }
 
-    ::-webkit-scrollbar {
+      ::-webkit-scrollbar {
         width: 5px;
-        background-color: rgb(0 0 0 / 8%);
-    }
+        background-color: rgba(0, 0, 0, 0.08);
+      }
 
-    ::-webkit-scrollbar-thumb {
-        background-color: rgb(0 0 0 / 32%);
+      ::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.32);
         border-radius: 4px;
-    }
+      }
     `;
 
-    // HTML akhir
+    // Halaman HTML yang akan dibuka
     const originalHTML = `<!doctype html>
 <html>
 <head>
@@ -75,15 +86,17 @@ window.function = function (htmlParam, fileNameParam) {
   <style>${customCSS}</style>
 </head>
 <body>
-  <button id="print">Print</button>
+  <button class="button" id="print">PRINT</button>
   <div id="content" class="invoice"></div>
 
   <script>
     (function () {
       try {
+        // Masukkan HTML user
         var contentEl = document.getElementById('content');
         contentEl.innerHTML = decodeURIComponent("${encodedUserHtml}");
 
+        // Fungsi print
         function doPrint() {
           try {
             var el = document.getElementById('content');
@@ -105,4 +118,32 @@ window.function = function (htmlParam, fileNameParam) {
               }
             };
 
-            html2pdf().set(opt).from(el).toPdf().get('pdf').then(
+            html2pdf().set(opt).from(el).toPdf().get('pdf').then(function (pdf) {
+              try { pdf.autoPrint(); } catch (e) { console.warn('autoPrint error:', e); }
+              window.open(pdf.output('bloburl'), '_blank');
+            }).catch(function (err) {
+              console.error('html2pdf error:', err);
+              alert('Gagal membuat PDF — lihat console.');
+            });
+          } catch (e) {
+            console.error('doPrint internal error:', e);
+            alert('Kesalahan saat proses print.');
+          }
+        }
+
+        document.getElementById('print').addEventListener('click', doPrint);
+        window.scrollTo(0, 0);
+      } catch (e) {
+        console.error('init error:', e);
+        document.body.insertAdjacentHTML('beforeend', '<pre style="color:red">Init error: ' + e + '</pre>');
+      }
+    })();
+  </script>
+</body>
+</html>`;
+
+    return "data:text/html;charset=utf-8," + encodeURIComponent(originalHTML);
+  } catch (err) {
+    return "ERROR: " + (err?.toString?.() || 'Unknown error');
+  }
+};
