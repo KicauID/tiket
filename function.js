@@ -4,24 +4,35 @@ window.function = async function (html) {
     const orientation = "portrait";
     const margin = 0;
 
-    // Ambil HTML dari parameter
     html = html.value ?? "No HTML set.";
 
-    // TEMPORARY DOM untuk ukur dimensi HTML
+    // TEMPORARY DOM untuk ukur dimensi real konten
     const tempDiv = document.createElement("div");
     tempDiv.style.position = "absolute";
     tempDiv.style.visibility = "hidden";
+    tempDiv.style.left = "-9999px"; 
+    tempDiv.style.top = "-9999px";
+    tempDiv.style.background = "white";
+    tempDiv.style.padding = "0";
     tempDiv.innerHTML = html;
     document.body.appendChild(tempDiv);
 
-    const rect = tempDiv.getBoundingClientRect();
-    const dimensions = [rect.width, rect.height];
+    let width = tempDiv.scrollWidth;
+    let height = tempDiv.scrollHeight;
+
+    // Fallback jika terlalu kecil → gunakan A4 px @72dpi
+    if (width < 100 || height < 100) {
+        width = 595.28;
+        height = 841.89;
+        console.log("Fallback to A4 size");
+    }
+
     document.body.removeChild(tempDiv);
 
-    console.log(`Auto size detected: ${dimensions}`);
+    console.log(`Auto size detected: ${width} x ${height}`);
 
     const customCSS = `
-        body { margin: 0!important; }
+        body { margin: 0!important; background: white; }
         .button {
             width: 100%;
             border-radius: 0;
@@ -58,7 +69,7 @@ window.function = async function (html) {
                     margin: ${margin},
                     filename: '${fileName}',
                     html2canvas: { useCORS: true, scale: ${fidelity} },
-                    jsPDF: { unit: 'px', orientation: '${orientation}', format: [${dimensions[0]}, ${dimensions[1]}] }
+                    jsPDF: { unit: 'px', orientation: '${orientation}', format: [${width}, ${height}] }
                 };
                 html2pdf().set(opt).from(element).toPdf().get('pdf').then(function(pdf) {
                     pdf.autoPrint();
