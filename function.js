@@ -58,7 +58,6 @@ window.function = function (htmlParam, fileNameParam) {
       .invoice {
         width: 350px;
         height: auto;
-        border-bottom: 5px dashed #000;
         padding: 0;
         box-sizing: border-box;
         margin-top: 0 !important;
