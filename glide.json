@@ -1,17 +1,18 @@
-{
-  "functions": [
+[
     {
-      "name": "HTML to AutoSize PDF",
-      "code": "function.js",
-      "driver": "driver.js",
-      "parameters": [
-        {
-          "name": "html",
-          "type": "string",
-          "required": true
+        "kind": "column",
+        "name": "HTML to AutoSize Printer",
+        "description": "Cetak HTML langsung sesuai ukuran aslinya (auto-size)",
+        "author": "KICAU NUSANTARA",
+        "params": [
+            {
+                "name": "html",
+                "displayName": "HTML",
+                "type": "string"
+            }
+        ],
+        "result": {
+            "type": "string"
         }
-      ],
-      "returns": "string"
     }
-  ]
-}
+]
