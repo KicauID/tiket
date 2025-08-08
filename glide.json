@@ -1,12 +1,17 @@
-[
+{
+  "functions": [
     {
-        "kind": "column",
-        "name": "HTML to Printer",
-        "description": "Automatically prints HTML content to Bluetooth printer with auto size detection",
-        "author": "KICAU NUSANTARA",
-        "params": [
-            { "name": "html", "displayName": "HTML", "type": "string" }
-        ],
-        "result": { "type": "string" }
+      "name": "HTML to AutoSize PDF",
+      "code": "function.js",
+      "driver": "driver.js",
+      "parameters": [
+        {
+          "name": "html",
+          "type": "string",
+          "required": true
+        }
+      ],
+      "returns": "string"
     }
-]
+  ]
+}
