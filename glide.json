@@ -9,12 +9,8 @@
                 "name": "html",
                 "displayName": "HTML",
                 "type": "string"
-            },
-            {
-                "name": "fileName",
-                "displayName": "Filename",
-                "type": "string"
             }
+         
         ],
         "result": {
             "type": "string"
