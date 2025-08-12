@@ -1,6 +1,5 @@
 window.function = function (htmlParam, fileNameParam) {
   try {
-    // Ambil input (Glide biasanya kirim { value: "..." })
     const htmlRaw = (htmlParam && typeof htmlParam === 'object' && 'value' in htmlParam)
       ? String(htmlParam.value)
       : String(htmlParam ?? '');
@@ -9,13 +8,9 @@ window.function = function (htmlParam, fileNameParam) {
       ? String(fileNameParam.value)
       : String(fileNameParam ?? 'print');
 
-    // sanitasi nama file untuk keamanan
     const safeFileName = fileNameRaw.replace(/[^\w\-\.]+/g, '_');
-
-    // encode HTML user supaya tidak memutus <script> wrapper saat kita embed
     const encodedUserHtml = encodeURIComponent(htmlRaw);
 
-    // CSS fix overlay tombol
     const customCSS = `
       html, body {
         margin: 0 !important;
@@ -23,7 +18,6 @@ window.function = function (htmlParam, fileNameParam) {
         background: #fff;
         font-family: Arial, sans-serif;
       }
-
       .button {
         width: 100%;
         height: 32px;
@@ -43,22 +37,17 @@ window.function = function (htmlParam, fileNameParam) {
         z-index: 1000;
         background: #0353A7;
       }
-
       .button:hover {
         background: #f5f5f5;
         color: #000000;
       }
-
       .button.printing,
       .button.done {
         background: #ffffff;
         color: #000000;
       }
-
- 
     `;
 
-    // Halaman HTML yang akan dibuka
     const originalHTML = `<!doctype html>
 <html>
 <head>
@@ -75,19 +64,15 @@ window.function = function (htmlParam, fileNameParam) {
   <script>
     (function () {
       try {
-        // Masukkan HTML user
         var contentEl = document.getElementById('content');
         contentEl.innerHTML = decodeURIComponent("${encodedUserHtml}");
 
-        // Fungsi print
         function doPrint() {
           try {
             var el = document.getElementById('content');
             var elementWidth = 350;
+            // Auto height tanpa default 600px
             var elementHeight = Math.max(el.scrollHeight, el.offsetHeight, el.clientHeight || 0);
-            if (!elementHeight || elementHeight < 50) {
-              elementHeight = 600;
-            }
 
             var opt = {
               margin: 0,
