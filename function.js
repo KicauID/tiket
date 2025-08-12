@@ -70,9 +70,8 @@ window.function = function (htmlParam, fileNameParam) {
         function doPrint() {
           try {
             var el = document.getElementById('content');
-            var elementWidth = 350;
-            // Auto height tanpa default 600px
-            var elementHeight = Math.max(el.scrollHeight, el.offsetHeight, el.clientHeight || 0);
+            var elementWidth = el.offsetWidth;   // Lebar asli HTML
+            var elementHeight = el.scrollHeight; // Tinggi asli HTML
 
             var opt = {
               margin: 0,
@@ -83,15 +82,13 @@ window.function = function (htmlParam, fileNameParam) {
                 orientation: 'portrait',
                 format: [elementWidth, elementHeight],
                 hotfixes: ['px_scaling']
-              }
+              },
+              pagebreak: { mode: ['avoid'] } // Hindari pecah halaman
             };
 
             html2pdf().set(opt).from(el).toPdf().get('pdf').then(function (pdf) {
               try { pdf.autoPrint(); } catch (e) { console.warn('autoPrint error:', e); }
               window.open(pdf.output('bloburl'), '_blank');
-            }).catch(function (err) {
-              console.error('html2pdf error:', err);
-              alert('Gagal membuat PDF — lihat console.');
             });
           } catch (e) {
             console.error('doPrint internal error:', e);
