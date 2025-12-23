@@ -1,23 +1,19 @@
 [
-  {
-    "kind": "column",
-    "name": "HTML to Printer",
-    "description": "Print HTML content with selectable format and fixed print button",
-    "author": "KICAU NUSANTARA",
-    "params": [
-      {
-        "name": "html",
-        "displayName": "HTML",
-        "type": "string"
-      },
-      {
-        "name": "format",
-        "displayName": "Format (1, A4, A6, invoice)",
-        "type": "string"
-      }
-    ],
-    "result": {
-      "type": "string"
+    {
+        "kind": "column",
+        "name": "HTML to Printer",
+        "description": "Cetak HTML ke printer Bluetooth dengan lebar 350px dan tinggi otomatis mengikuti konten",
+        "author": "KICAU NUSANTARA",
+        "params": [
+            {
+                "name": "html",
+                "displayName": "HTML",
+                "type": "string"
+            }
+         
+        ],
+        "result": {
+            "type": "string"
+        }
     }
-  }
 ]
